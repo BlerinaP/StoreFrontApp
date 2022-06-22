@@ -3,6 +3,26 @@
 ## Getting Started
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+##STARTING APP
+
+1.First Step create manually in your local machine a postgres DATABASE. 
+
+    -Open your terminal and connect with psql providing  username and password. 
+    -Run Create Database with specific name.
+
+2.Create .env file and put there
+-ENV = dev (or test if you are testing)
+- POSTGRES_HOST
+- POSTGRES_DB
+- POSTGRES_USER
+- POSTGRES_PASSWORD
+- BCRYPT_PASSWORD
+- SALT_ROUNDS
+
+If you are testing create another Database just for testing and another env variable
+- POSTGRES_DB_TEST
+
+Start app with npm start.
 
 ## Required Technologies
 Your application must make use of the following libraries:

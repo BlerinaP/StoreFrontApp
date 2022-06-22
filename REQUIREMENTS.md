@@ -3,21 +3,25 @@ The company stakeholders want to create an online storefront to showcase their g
 
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
-##STARTING APP
-1.First Step create manually in your local machine a postgres DATABASE
-2.Create .env file and put there
--ENV = dev (or test if you are testing)
-- POSTGRES_HOST
-- POSTGRES_DB
-- POSTGRES_USER
-- POSTGRES_PASSWORD
-- BCRYPT_PASSWORD
-- SALT_ROUNDS
+##Database Schema
+![img.png](img.png)
 
-If you are testing create another Database just for testing and another env variable
-- POSTGRES_DB_TEST
+Users
+![img_1.png](img_1.png)
 
-Start app with npm start.
+Products
+
+![img_2.png](img_2.png)
+
+Orders
+
+![img_3.png](img_3.png)
+
+order_product
+
+![img_4.png](img_4.png)
+
+
 Test routes in postman
 ## API Endpoints
 #### Products
