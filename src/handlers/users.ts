@@ -1,12 +1,20 @@
 import express, {Request, Response} from 'express'
 import {User, STOREFRONT_USER} from "../models/users";
 var jwt = require('jsonwebtoken');
+import IsAuth from "./IsAuth";
+import isAuth from "./IsAuth";
 
 const store = new STOREFRONT_USER();
 
 const index = async (_req: Request, res:Response) => {
-    const users = await store.index()
-    res.json(users)
+    try{
+        const users = await store.index()
+        res.json(users)
+    }catch(err){
+        res.status(404)
+        res.json('Something went wrong')
+    }
+
 };
 
 const create = async (req: Request, res:Response) => {
@@ -21,19 +29,29 @@ const create = async (req: Request, res:Response) => {
         res.json(token)
     } catch (err) {
         res.status(400);
-        console.log(err);
         res.json(err)
     }
 };
 
 const show = async (req: Request, res:Response) => {
-    const user = await store.show(req.body.id);
-    res.json(user)
+    try{
+        const user = await store.show(req.body.id);
+        res.json(user)
+    } catch(err){
+        res.status(404)
+        res.json('User with specific id not found')
+    }
 };
 
 const delete_user = async(req: Request, res: Response) => {
-    const deleted = await store.delete(req.body.id)
-    res.json(deleted)
+    try{
+        const deleted = await store.delete(req.body.id)
+        res.json(deleted)
+    }catch(err){
+        res.status(404)
+        res.json('User with specific id not found')
+    }
+
 };
 
 const update = async (req:Request, res:Response) => {
@@ -42,19 +60,6 @@ const update = async (req:Request, res:Response) => {
         firstname: req.body.firstname,
         password: req.body.password
     };
-    try{
-        const authorizationHeader = req.headers.authorization
-
-        const token = authorizationHeader && authorizationHeader.split(' ')[1]
-        const decoded = jwt.verify(token, process.env.BCRYPT_PASSWORD)
-        if(decoded.user.id !== user.id){
-            throw new Error('User id does not match')
-        }
-    } catch (err) {
-        res.status(401)
-        res.json(err)
-        return
-    }
 
     try{
         const updated = await store.create(user)
@@ -82,11 +87,11 @@ const authenticate = async (req:Request, res:Response) => {
 };
 
 const users_routes = (app: express.Application) => {
-    app.get('/users', index);
+    app.get('/users', isAuth, index);
     app.post('/users', create);
-    app.get('/users/:id', show);
-    app.delete('/users', delete_user)
-    app.put('/users/:id', update)
+    app.get('/users/:id', isAuth, show);
+    app.delete('/users', isAuth, delete_user)
+    app.put('/users/:id', isAuth, update)
 };
 
 
