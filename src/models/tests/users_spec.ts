@@ -1,12 +1,20 @@
 import {User, STOREFRONT_USER} from "../users";
 const store = new STOREFRONT_USER()
-const UserCreated = {
-    id: 1,
-    firstname: 'Blerina',
-    lastname: 'Pllana',
-    password: 'blerina'
-};
+
 describe("User Model", () => {
+    const UserCreated = {
+        id: 1,
+        firstname: 'Blerina',
+        lastname: 'Pllana',
+        password: 'blerina'
+    };
+    async  function createUser (user){
+        return store.create(user)
+    }
+
+    async function deleteUser (id:string){
+        return store.delete(id)
+    }
 
    it('should have an index method', () => {
        expect(store.index).toBeDefined();
@@ -21,33 +29,31 @@ describe("User Model", () => {
         expect(store.delete).toBeDefined();
     });
     it("Index Method should return a list of users", async () => {
-        const res = await store.index();
-        expect(Array.isArray(res)).toBe(true);
+        const newUser = await createUser(UserCreated);
+        const list = await store.index();
+        expect(list).toEqual([newUser])
+        await deleteUser(String(newUser.id))
     });
     it('Should create a user',  async () => {
-        const res = await store.create({
-            id: UserCreated.id,
-            firstname: UserCreated.firstname,
-            lastname: UserCreated.lastname,
-            password: UserCreated.password
-        });
-        expect(res.id).toBeDefined();
-        expect(res.firstname).toEqual(UserCreated.firstname);
-        expect(res.lastname).toEqual(UserCreated.lastname);
-        expect(res.password).toBeDefined()
+        const newUser = await createUser(UserCreated);
+        if(newUser) {
+            expect(newUser.firstname).toEqual(UserCreated.firstname);
+            expect(newUser.lastname).toEqual(UserCreated.lastname);
+            expect(newUser.password).toBeDefined()
+        }
+        await deleteUser(String(newUser.id))
     });
     it('Should show a user', async() => {
-       const res = await store.show(`1`);
-        expect(res.id).toBeDefined();
-        expect(res.password).toBeDefined();
-        expect(res.firstname).toEqual(UserCreated.firstname);
-        expect(res.lastname).toEqual(UserCreated.lastname);
+        const newUser = await createUser(UserCreated);
+        const dbUser = await store.show(String(newUser.id));
+        expect(dbUser).toEqual(newUser)
+        await deleteUser(String(newUser.id))
     });
     it('delete method should remove the user', async () => {
-       store.delete(`1`);
-        const res = await store.index();
-
-        expect(Array.isArray(res)).toBe(true);
+        const newUser = await createUser(UserCreated);
+        await deleteUser(String(newUser.id))
+        const list = await store.index()
+        expect(list).toEqual([])
     });
 });
 

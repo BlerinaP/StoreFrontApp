@@ -1,10 +1,20 @@
 import {Orders, STOREFRONT_ORDERS} from "../order";
 const store = new STOREFRONT_ORDERS()
-const OrderCreated = {
-    user_id: 1,
-    status: 'shipped'
-};
+
 describe("Orders Model", () => {
+    const OrderCreated = {
+        id: 1,
+        user_id: 1,
+        status: 'shipped'
+    };
+    async  function createOrder (order){
+        return store.create(order)
+    }
+
+    async function deleteOrder (id:string){
+        return store.delete(id)
+    }
+
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
     });
@@ -18,27 +28,31 @@ describe("Orders Model", () => {
         expect(store.delete).toBeDefined();
     });
     it("Index Method should return a list of users", async () => {
-        const res = await store.index();
-        expect(Array.isArray(res)).toBe(true);
+        const newOrder = await createOrder(OrderCreated)
+        const list = await store.index();
+        expect(list).toEqual([newOrder])
+        await deleteOrder(String(newOrder.id))
     });
     it('Should create a order',  async () => {
-        const res = await store.create({
-            user_id: OrderCreated.user_id,
-            status: OrderCreated.status
-        });
-        expect(res.user_id).toBeDefined();
-        expect(res.status).toEqual(OrderCreated.status)
+        const newOrder = await createOrder(OrderCreated)
+        if(newOrder){
+            expect(newOrder.user_id).toBeDefined();
+            expect(newOrder.status).toEqual(OrderCreated.status)
+        }
+        await deleteOrder(String(newOrder.id))
     });
-    it('Should show a user', async() => {
-        const res = await store.show(`1`);
-        expect(res.user_id).toBeDefined();
-        expect(res.status).toEqual(OrderCreated.status)
+    it('Should show a order', async() => {
+        const newOrder = await createOrder(OrderCreated)
+        const orderDb = await store.show(String(newOrder.id));
+        expect(orderDb).toEqual(newOrder)
+        await deleteOrder(String(newOrder.id))
     });
     it('delete method should remove the user', async () => {
-        store.delete(`1`);
-        const res = await store.index();
+        const newOrder = await createOrder(OrderCreated)
+        await deleteOrder(String(newOrder.id))
+        const list = await store.index();
 
-        expect(Array.isArray(res)).toBe(true);
+        expect(list).toEqual([]);
     });
 });
 

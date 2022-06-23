@@ -1,11 +1,18 @@
 import {Products, STOREFRONT_PRODUCTS} from "../products";
 const store = new STOREFRONT_PRODUCTS();
-const ProductCreated = {
-    id: 1,
-    name: 'shoes',
-    price: 12
-};
+
 describe("Products Model", () => {
+    const ProductCreated = {
+        id: 1,
+        name: 'shoes',
+        price: 12
+    };
+    async  function createProduct (product){
+        return store.create(product)
+    }
+    async function deleteProduct (id:string){
+        return store.delete(id)
+    }
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
     });
@@ -19,30 +26,31 @@ describe("Products Model", () => {
         expect(store.delete).toBeDefined();
     });
     it("Index Method should return a list of users", async () => {
-        const res = await store.index();
-        expect(Array.isArray(res)).toBe(true);
+        const newProduct = await createProduct(ProductCreated);
+        const list = await store.index()
+        expect(list).toEqual([newProduct])
+        await deleteProduct(String(newProduct.id))
     });
     it('Should create a product',  async () => {
-        const res = await store.create({
-            id: ProductCreated.id,
-            name: ProductCreated.name,
-            price: ProductCreated.price
-        });
-        expect(res.id).toBeDefined();
-        expect(res.name).toEqual(ProductCreated.name);
-        expect(res.price).toEqual(ProductCreated.price)
+        const newProduct = await createProduct(ProductCreated);
+        if(newProduct){
+            expect(newProduct.name).toEqual(ProductCreated.name);
+            expect(newProduct.price).toEqual(ProductCreated.price)
+        }
+        await deleteProduct(String(newProduct.id))
     });
     it('Should show a product', async() => {
-        const res = await store.show(`1`);
-        expect(res.id).toBeDefined();
-        expect(res.price).toEqual(ProductCreated.price);
-        expect(res.name).toEqual(ProductCreated.name);
+        const newProduct = await createProduct(ProductCreated);
+        const prodDb = await store.show(String(newProduct.id));
+        expect(prodDb).toEqual(newProduct)
+        await deleteProduct(String(newProduct.id))
     });
     it('delete method should remove the user', async () => {
-        store.delete(`1`);
-        const res = await store.index();
+        const newProduct = await createProduct(ProductCreated);
+        await deleteProduct(String(newProduct.id))
+        const list = await store.index()
 
-        expect(Array.isArray(res)).toBe(true);
+        expect(list).toEqual([])
     });
 });
 
