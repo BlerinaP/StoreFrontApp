@@ -35,86 +35,102 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var products_1 = require("../models/products");
 var jwt = require('jsonwebtoken');
+var IsAuth_1 = __importDefault(require("./IsAuth"));
 var store = new products_1.STOREFRONT_PRODUCTS();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
                 products = _a.sent();
                 res.json(products);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(404);
+                res.json('Something went wrong');
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var authorizationHeader, token, product, newProd, err_1;
+    var product, newProd, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                try {
-                    authorizationHeader = req.headers.authorization;
-                    token = authorizationHeader && authorizationHeader.split(' ')[1];
-                    jwt.verify(token, process.env.BCRYPT_PASSWORD);
-                }
-                catch (err) {
-                    res.status(401);
-                    res.json('Access denied, invalid token');
-                    return [2 /*return*/];
-                }
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.trys.push([0, 2, , 3]);
                 product = {
                     name: req.body.name,
                     price: req.body.price
                 };
                 return [4 /*yield*/, store.create(product)];
-            case 2:
+            case 1:
                 newProd = _a.sent();
                 res.json(newProd);
-                return [3 /*break*/, 4];
-            case 3:
-                err_1 = _a.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
                 res.status(400);
-                res.json(err_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product;
+    var product, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.body.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.body.id)];
             case 1:
                 product = _a.sent();
                 res.json(product);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                res.status(404);
+                res.json('Product with specific id not found');
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var delete_product = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted;
+    var deleted, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store["delete"](req.body.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store["delete"](req.body.id)];
             case 1:
                 deleted = _a.sent();
                 res.json(deleted);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                res.status(404);
+                res.json(err_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var products_routes = function (app) {
-    app.get('/products', index);
-    app.post('/products', create);
-    app.get('/products/:id', show);
-    app["delete"]('/products', delete_product);
+    app.get('/products', IsAuth_1["default"], index);
+    app.post('/products', IsAuth_1["default"], create);
+    app.get('/products/:id', IsAuth_1["default"], show);
+    app["delete"]('/products', IsAuth_1["default"], delete_product);
 };
 exports["default"] = products_routes;

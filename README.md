@@ -19,7 +19,7 @@ This repo contains a basic Node and Express app to get you started in constructi
 - BCRYPT_PASSWORD
 - SALT_ROUNDS
 
-If you are testing create another Database just for testing and another env variable
+For testing create another Database just for testing, and another env variable
 - POSTGRES_DB_TEST
 
 Start app with npm start.

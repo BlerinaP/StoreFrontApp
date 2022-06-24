@@ -35,24 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var users_1 = require("../models/users");
 var jwt = require('jsonwebtoken');
+var IsAuth_1 = __importDefault(require("./IsAuth"));
 var store = new users_1.STOREFRONT_USER();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.index()];
             case 1:
                 users = _a.sent();
                 res.json(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(404);
+                res.json('Something went wrong');
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, token, err_1;
+    var user, newUser, token, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -69,41 +81,56 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(token);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_2 = _a.sent();
                 res.status(400);
-                console.log(err_1);
-                res.json(err_1);
+                res.json(err_2);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user;
+    var user, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(req.body.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.show(req.body.id)];
             case 1:
                 user = _a.sent();
                 res.json(user);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_3 = _a.sent();
+                res.status(404);
+                res.json('User with specific id not found');
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var delete_user = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var deleted;
+    var deleted, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store["delete"](req.body.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store["delete"](req.body.id)];
             case 1:
                 deleted = _a.sent();
                 res.json(deleted);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                res.status(404);
+                res.json('User with specific id not found');
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, authorizationHeader, token, decoded, updated, err_2;
+    var user, updated, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -112,19 +139,6 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                     firstname: req.body.firstname,
                     password: req.body.password
                 };
-                try {
-                    authorizationHeader = req.headers.authorization;
-                    token = authorizationHeader && authorizationHeader.split(' ')[1];
-                    decoded = jwt.verify(token, process.env.BCRYPT_PASSWORD);
-                    if (decoded.user.id !== user.id) {
-                        throw new Error('User id does not match');
-                    }
-                }
-                catch (err) {
-                    res.status(401);
-                    res.json(err);
-                    return [2 /*return*/];
-                }
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
@@ -134,16 +148,16 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 res.json(updated);
                 return [3 /*break*/, 4];
             case 3:
-                err_2 = _a.sent();
+                err_5 = _a.sent();
                 res.status(400);
-                res.json(err_2);
+                res.json(err_5);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, u, token, err_3;
+    var user, u, token, err_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -162,19 +176,19 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:
-                err_3 = _a.sent();
+                err_6 = _a.sent();
                 res.status(401);
-                res.json({ err: err_3 });
+                res.json({ err: err_6 });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 var users_routes = function (app) {
-    app.get('/users', index);
+    app.get('/users', IsAuth_1["default"], index);
     app.post('/users', create);
-    app.get('/users/:id', show);
-    app["delete"]('/users', delete_user);
-    app.put('/users/:id', update);
+    app.get('/users/:id', IsAuth_1["default"], show);
+    app["delete"]('/users', IsAuth_1["default"], delete_user);
+    app.put('/users/:id', IsAuth_1["default"], update);
 };
 exports["default"] = users_routes;

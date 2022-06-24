@@ -4,8 +4,8 @@ import users_routes from "./handlers/users";
 import products_routes from "./handlers/products"
 import order_routes from "./handlers/order";
 
-const app: express.Application = express();
-const address: string = "0.0.0.0:3000";
+export const app: express.Application = express();
+const port: number = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
@@ -18,7 +18,6 @@ users_routes(app);
 products_routes(app);
 order_routes(app);
 
-app.listen(3000, function () {
-    console.log(`starting app on: ${address}`)
+app.listen(port, function () {
+    console.log(`starting app on: ${port}`)
 });
-export  default app

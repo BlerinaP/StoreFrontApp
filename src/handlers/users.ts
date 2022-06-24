@@ -1,7 +1,6 @@
 import express, {Request, Response} from 'express'
 import {User, STOREFRONT_USER} from "../models/users";
 var jwt = require('jsonwebtoken');
-import IsAuth from "./IsAuth";
 import isAuth from "./IsAuth";
 
 const store = new STOREFRONT_USER();
