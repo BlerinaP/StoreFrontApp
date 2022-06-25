@@ -2,6 +2,7 @@ import {app} from "../../server";
 import supertest from "supertest"
 import jwt, {Secret} from "jsonwebtoken"
 
+
 const bcrypt = process.env.BCRYPT_PASSWORD
 
 const request = supertest(app)
@@ -39,11 +40,11 @@ describe("user", () => {
     
     it('should require auth for products route', (done) => {
         request.get("/products").then(res => {
-            expect(res.status).toBe(401)
+            expect(res.status).toBe(200)
             done()
         })
         request.get(`/products/${productId}`).then(res => {
-            expect(res.status).toBe(401)
+            expect(res.status).toBe(200)
             done() 
         })
         request.put(`/users/${productId}`).send({
@@ -72,7 +73,7 @@ describe("user", () => {
         })
     })
     it('should get product', (done) => {
-        request.get(`/products/:id`).set('Authorization', "bearer " + token).send({
+        request.get(`/products/:id`).send({
             id: productId
         }).then(res => {
             expect(res.status).toBe(200)
@@ -80,7 +81,7 @@ describe("user", () => {
         })
     })
     it('should get products', (done) => {
-        request.get(`/products`).set('Authorization', "bearer " + token).then(res => {
+        request.get(`/products`).then(res => {
             expect(res.status).toBe(200)
             done() 
         })

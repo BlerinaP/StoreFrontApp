@@ -50,9 +50,9 @@ const delete_product = async(req: Request, res: Response) => {
 };
 
 const products_routes = (app: express.Application) => {
-    app.get('/products', isAuth, index);
+    app.get('/products', index);
     app.post('/products', isAuth, create);
-    app.get('/products/:id', isAuth, show);
+    app.get('/products/:id', show);
     app.delete('/products', isAuth, delete_product);
 };
 export default products_routes

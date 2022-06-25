@@ -1,6 +1,8 @@
 import {Products, STOREFRONT_PRODUCTS} from "../products";
 const store = new STOREFRONT_PRODUCTS();
 
+
+
 describe("Products Model", () => {
     const ProductCreated = {
         id: 1,

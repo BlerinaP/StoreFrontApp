@@ -3,10 +3,15 @@
 ## Getting Started
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+
+-Backend App runs in port 3000
+-Database runs in port 5432
+
 ##STARTING APP
 
-1.First Step create manually in your local machine a postgres DATABASE. 
 
+
+1.First Step create manually in your local machine a postgres DATABASE. 
     -Open your terminal and connect with psql providing  username and password. 
     -Run Create Database with specific name.
 
@@ -22,8 +27,45 @@ This repo contains a basic Node and Express app to get you started in constructi
 For testing create another Database just for testing, and another env variable
 - POSTGRES_DB_TEST
 
-Start app with npm start.
+3. Creating database.json file and adding the required fields with ***
+{
+  "dev": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "storefront_dev",
+    "user": "****",
+    "password": "****"
+  },
+  "test": {
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "database": "teststorefront",
+    "user": "****",
+    "password": "****"
+  }
+}
 
+4. Conneting do Database in database.ts file
+if(ENV === 'dev'){
+    client = new Pool({
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
+    });
+}
+
+if(ENV === 'test'){
+    client = new Pool({
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB_TEST,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
+    });
+}
+
+Start app with npm start.
+If you are testin please change ENV manually from dev to test
 ## Required Technologies
 Your application must make use of the following libraries:
 - Postgres for the database

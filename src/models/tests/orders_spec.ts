@@ -1,6 +1,7 @@
 import {Orders, STOREFRONT_ORDERS} from "../order";
 const store = new STOREFRONT_ORDERS()
 
+
 describe("Orders Model", () => {
     const OrderCreated = {
         id: 1,

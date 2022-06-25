@@ -1,6 +1,7 @@
 import {User, STOREFRONT_USER} from "../users";
 const store = new STOREFRONT_USER()
 
+
 describe("User Model", () => {
     const UserCreated = {
         id: 1,
