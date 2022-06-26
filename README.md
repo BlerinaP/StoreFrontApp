@@ -65,7 +65,7 @@ if(ENV === 'test'){
 }
 
 Start app with npm start.
-If you are testin please change ENV manually from dev to test
+If you are testing from linux run chmod +x ./changeEnv.sh  than npm run test_linux
 ## Required Technologies
 Your application must make use of the following libraries:
 - Postgres for the database

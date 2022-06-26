@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "cross-env NODE_ENV=test && db-migrate --env test up && jasmine-ts && db-migrate db:drop test down",
+    "test": "changeEnv.bat && db-migrate --env test up && jasmine-ts && db-migrate db:drop test down",
+    "test_linux": "./changeEnv.sh && db-migrate --env test up && jasmine-ts && db-migrate db:drop test down",
     "tsc": "tsc"
   },
   "author": "Udacity",
